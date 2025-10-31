@@ -1,4 +1,5 @@
-import { Clock, Tag, Edit, Mail, Calendar } from "lucide-react";
+import { Clock, Tag, Edit, Mail, Calendar, LogOut } from "lucide-react";
+import { signOut } from "@/utils/actions";
 
 const mockUser = {
   username: "johndoe",
@@ -51,10 +52,18 @@ export default function MyPage() {
                   {mockUser.bio}
                 </p>
               </div>
-              <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-700 hover:border-gray-600 hover:bg-gray-800/50 transition-colors text-sm">
-                <Edit size={14} />
-                <span>Edit</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-700 hover:border-gray-600 hover:bg-gray-800/50 transition-colors text-sm">
+                  <Edit size={14} />
+                  <span>Edit</span>
+                </button>
+                <form action={signOut}>
+                  <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-700 hover:border-gray-600 hover:bg-gray-800/50 transition-colors text-sm">
+                    <LogOut size={14} />
+                    <span>Logout</span>
+                  </button>
+                </form>
+              </div>
             </div>
 
             <div className="pt-4 border-t border-gray-800">

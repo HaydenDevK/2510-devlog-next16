@@ -66,18 +66,20 @@ export default async function Header() {
             </Link>
           )}
 
-          <Link
-            href="/mypage"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-          >
-            <Image
-              src={profile?.avatar_url}
-              alt={profile?.display_name}
-              className="rounded-full"
-              width={30}
-              height={30}
-            />
-          </Link>
+          {user && (
+            <Link
+              href="/mypage"
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
+              <Image
+                src={profile?.avatar_url}
+                alt={profile?.display_name}
+                className="rounded-full"
+                width={30}
+                height={30}
+              />
+            </Link>
+          )}
         </nav>
       </div>
     </header>

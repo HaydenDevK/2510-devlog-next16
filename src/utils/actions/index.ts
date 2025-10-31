@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 async function signInWithGithub() {
@@ -17,4 +18,10 @@ async function signInWithGithub() {
   }
 }
 
-export { signInWithGithub };
+async function signOut() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  revalidatePath("/"); // 페이지 다시 불러오기
+}
+
+export { signInWithGithub, signOut };
