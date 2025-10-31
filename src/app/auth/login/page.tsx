@@ -1,3 +1,4 @@
+import { signInWithGithub } from "@/utils/actions";
 import { Github } from "lucide-react";
 
 export default function Login() {
@@ -18,10 +19,12 @@ export default function Login() {
               Continue with Google
             </button>
 
-            <button className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-700 hover:border-gray-600 hover:bg-gray-800/50 transition-all text-sm">
-              <Github size={20} />
-              Continue with GitHub
-            </button>
+            <form action={signInWithGithub}>
+              <button className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-700 hover:border-gray-600 hover:bg-gray-800/50 transition-all text-sm">
+                <Github size={20} />
+                Continue with GitHub
+              </button>
+            </form>
 
             <button className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-700 hover:border-gray-600 hover:bg-gray-800/50 transition-all text-sm">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
