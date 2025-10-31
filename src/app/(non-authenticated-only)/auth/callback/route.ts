@@ -41,7 +41,7 @@ export async function GET(request: Request) {
     const profile = profileRows[0];
     let redirectPath = `${origin}${next}`;
     if (!profile || !profile.bio || profile.bio.trim() === "") {
-      redirectPath = "/auth/additional-info";
+      redirectPath = "/additional-info";
     } else {
       redirectPath = next;
     }

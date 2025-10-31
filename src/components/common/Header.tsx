@@ -52,7 +52,7 @@ export default async function Header() {
               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
             >
               <button className="inline-flex items-center justify-center font-medium transition-colors rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-[#21262D] hover:bg-[#30363d] text-white border border-[#30363d] text-xs px-2.5 py-1.5">
-                Write
+                New Post
               </button>
             </Link>
           ) : (

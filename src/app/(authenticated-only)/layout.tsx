@@ -13,7 +13,7 @@ export default async function AuthenticatedLayout({
   } = await supabase.auth.getUser();
 
   // 경로 보호 : 로그인 안되어 있으면 로그인 페이지로 리다이렉트
-  if (!user || !userError) {
+  if (!user || userError) {
     redirect("/auth/login");
   }
 
