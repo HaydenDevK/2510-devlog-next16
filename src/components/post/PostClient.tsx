@@ -1,6 +1,6 @@
 "use client";
 import DeleteModal from "@/components/common/DeleteModal";
-import type { PostDetail } from "@/types";
+import type { PostDetail } from "@/types/index";
 import { estimateReadTime } from "@/utils/helper";
 import { createClient } from "@/utils/supabase/client";
 import { format } from "date-fns";

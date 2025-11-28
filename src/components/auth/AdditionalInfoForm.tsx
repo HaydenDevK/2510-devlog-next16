@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { FormState, Profile } from "@/types";
+import { FormState, Profile } from "@/types/index";
 
 export default function AdditionalInfoForm({
   profile,

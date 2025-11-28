@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { Profile } from "@/types";
+import { Profile } from "@/types/index";
 
 export default async function Header() {
   const supabase = await createClient();
