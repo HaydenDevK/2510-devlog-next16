@@ -1,4 +1,6 @@
-// 클라이
+/**
+ * 클라이언트 사이드에서 사용하는 Supabase 클라이언트 함수
+ */
 import { Database } from "@/types/supabase";
 import { createBrowserClient } from "@supabase/ssr";
 

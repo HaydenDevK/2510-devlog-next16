@@ -13,7 +13,6 @@ export default async function NonAuthenticatedOnlyLayout({
 
   // 경로 보호 : 로그인 안되어 있으면 로그인 페이지로 리다이렉트
   if (user) {
-    console.log("User found");
     redirect("/");
   }
 
