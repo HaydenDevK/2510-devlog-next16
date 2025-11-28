@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { FormState, Profile } from "@/types";
 
 export default function AdditionalInfoForm({
   profile,
@@ -34,7 +35,7 @@ export default function AdditionalInfoForm({
         <input
           type="text"
           name="email"
-          defaultValue={profile.email ?? ""}
+          defaultValue={profile?.email ?? ""}
           className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-sm"
         />
       </div>
@@ -44,7 +45,7 @@ export default function AdditionalInfoForm({
         <input
           type="text"
           name="display_name"
-          defaultValue={profile.display_name ?? ""}
+          defaultValue={profile?.display_name ?? ""}
           className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-sm"
         />
       </div>
@@ -54,7 +55,7 @@ export default function AdditionalInfoForm({
         <textarea
           name="bio"
           rows={4}
-          defaultValue={profile.bio ?? ""}
+          defaultValue={profile?.bio ?? ""}
           className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-sm"
         />
       </div>

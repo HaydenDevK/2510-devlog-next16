@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { Profile } from "@/types";
 
 export default async function Header() {
   const supabase = await createClient();
@@ -10,7 +11,8 @@ export default async function Header() {
   } = await supabase.auth.getUser();
 
   // 로그인 중이면 프로필 가져오기
-  let profile: Profile;
+  let profile: Profile = null;
+
   if (user) {
     const { data } = await supabase
       .from("profiles")
@@ -18,7 +20,11 @@ export default async function Header() {
       .eq("id", user.id) // 특정 아이디만
       .single(); // 배열을 객체로
 
-    profile = data;
+    profile = data ?? null;
+  }
+
+  if (!profile) {
+    return <></>;
   }
 
   return (
@@ -26,7 +32,7 @@ export default async function Header() {
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-6">
         <Link
           href="/"
-          className="text-xl  tracking-wide text-white hover:text-gray-300 transition-colors font-bold"
+          className="text-xl tracking-wide text-white hover:text-gray-300 transition-colors font-bold"
         >
           Blog
         </Link>
@@ -46,16 +52,17 @@ export default async function Header() {
         </div>
 
         <nav className="flex items-center gap-6">
-          {user ? (
+          {user && (
             <Link
               href="/write"
               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
             >
               <button className="inline-flex items-center justify-center font-medium transition-colors rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-[#21262D] hover:bg-[#30363d] text-white border border-[#30363d] text-xs px-2.5 py-1.5">
-                New Post
+                Write
               </button>
             </Link>
-          ) : (
+          )}
+          {!user && (
             <Link
               href="/auth/login"
               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
@@ -65,19 +72,20 @@ export default async function Header() {
               </button>
             </Link>
           )}
-
           {user && (
             <Link
               href="/mypage"
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
-              <Image
-                src={profile?.avatar_url}
-                alt={profile?.display_name}
-                className="rounded-full"
-                width={30}
-                height={30}
-              />
+              <div className="w-8 h-8">
+                <Image
+                  src={profile.avatar_url ?? ""}
+                  alt={profile.display_name ?? ""}
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                />
+              </div>
             </Link>
           )}
         </nav>

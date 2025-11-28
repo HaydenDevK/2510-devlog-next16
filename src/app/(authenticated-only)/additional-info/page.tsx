@@ -1,4 +1,5 @@
 import AdditionalInfoForm from "@/components/auth/AdditionalInfoForm";
+import { FormState } from "@/types";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
