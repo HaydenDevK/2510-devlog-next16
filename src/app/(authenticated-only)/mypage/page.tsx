@@ -1,35 +1,33 @@
 import { Clock, Tag, Edit, Mail, Calendar, LogOut } from "lucide-react";
 import { signOut } from "@/utils/actions";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+import { estimateReadTime } from "@/utils/helper";
 
-const mockUser = {
-  username: "johndoe",
-  displayName: "John Doe",
-  email: "john@example.com",
-  bio: "Software developer passionate about web technologies and open source.",
-  joinedDate: "2025-01-15",
-  postCount: 12,
-};
+export default async function MyPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-const mockUserPosts = [
-  {
-    id: 1,
-    title: "Getting Started with React 19",
-    excerpt: "Explore the new features and improvements in React 19.",
-    date: "2025-10-20",
-    tags: ["React", "JavaScript"],
-    readTime: "5 min read",
-  },
-  {
-    id: 5,
-    title: "State Management in 2025",
-    excerpt: "Compare different state management solutions.",
-    date: "2025-10-10",
-    tags: ["React", "State Management"],
-    readTime: "7 min read",
-  },
-];
+  // 타입 가드 + 경로 보호 : layout.tsx에서 경로 보호 처리 했으나, 타입 가드 겸 중복 작성
+  if (!user) {
+    redirect("/auth/login");
+  }
 
-export default function MyPage() {
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select(
+      "email, display_name, avatar_url, bio, created_at, posts(id, title, content, tags, created_at)"
+    )
+    .eq("id", user.id)
+    .single();
+
+  // 타입 가드
+  if (!profile) {
+    return <></>;
+  }
+
   return (
     <div className="max-w-4xl mx-auto space-y-12">
       <div className="space-y-8">
@@ -44,12 +42,12 @@ export default function MyPage() {
               <div className="space-y-4 flex-1">
                 <div>
                   <h2 className="text-2xl font-light">
-                    {mockUser.displayName}
+                    {profile.display_name}
                   </h2>
-                  <p className="text-gray-400 text-sm">@{mockUser.username}</p>
+                  <p className="text-gray-400 text-sm">@{profile.email}</p>
                 </div>
                 <p className="text-gray-300 leading-relaxed max-w-2xl">
-                  {mockUser.bio}
+                  {profile.bio}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -70,15 +68,15 @@ export default function MyPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
                   <Mail size={16} />
-                  <span>{mockUser.email}</span>
+                  <span>{profile.email}</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
                   <Calendar size={16} />
-                  <span>Joined {mockUser.joinedDate}</span>
+                  <span>Joined {profile.created_at}</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
                   <Edit size={16} />
-                  <span>{mockUser.postCount} posts</span>
+                  <span>{profile.posts.length} posts</span>
                 </div>
               </div>
             </div>
@@ -98,7 +96,7 @@ export default function MyPage() {
         </div>
 
         <div className="space-y-4">
-          {mockUserPosts.map((post) => (
+          {profile.posts.map((post) => (
             <article key={post.id} className="group">
               <a href={`/post/${post.id}`} className="block">
                 <div className="border border-gray-800 rounded-lg p-6 hover:border-gray-700 transition-colors bg-gray-900/30">
@@ -112,25 +110,25 @@ export default function MyPage() {
                       </button>
                     </div>
                     <p className="text-gray-400 leading-relaxed">
-                      {post.excerpt}
+                      {post.content}
                     </p>
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <div className="flex items-center gap-1">
                         <Clock size={14} />
-                        <span>{post.date}</span>
+                        <span>{post.created_at}</span>
                       </div>
                       <span>•</span>
-                      <span>{post.readTime}</span>
+                      <span>{estimateReadTime(post.content || "")}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Tag size={14} className="text-gray-600" />
                       <div className="flex gap-2">
-                        {post.tags.map((tag) => (
+                        {post.tags?.split(",").map((tag) => (
                           <span
                             key={tag}
                             className="text-xs px-2 py-1 rounded bg-gray-800 text-gray-400"
                           >
-                            {tag}
+                            {tag.trim()}
                           </span>
                         ))}
                       </div>
